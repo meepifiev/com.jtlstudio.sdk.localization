@@ -1,0 +1,20 @@
+{
+    "name": "JTLStudio.SDK.Localization.Editor",
+    "rootNamespace": "JTLStudio.SDK.Localization.Editor",
+    "references": [
+        "JTLStudio.SDK",
+        "JTLStudio.SDK.Editor",
+        "JTLStudio.SDK.Localization"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

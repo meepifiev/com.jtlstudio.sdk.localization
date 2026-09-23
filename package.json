@@ -1,0 +1,24 @@
+{
+  "name": "com.jtlstudio.sdk.localization",
+  "displayName": "JTL SDK Localization",
+  "version": "1.0.0",
+  "unity": "2021.3",
+  "description": "Static text localization for JTL SDK: a table of keys, a component for TextMeshPro, fonts per language, CSV and a scene pass.",
+  "author": {
+    "name": "JTL Studio",
+    "url": "https://github.com/meepifiev/com.jtlstudio.sdk.localization"
+  },
+  "documentationUrl": "https://meepifiev.github.io/com.jtlstudio.sdk/",
+  "changelogUrl": "https://github.com/meepifiev/com.jtlstudio.sdk.localization/blob/main/CHANGELOG.md",
+  "license": "MIT",
+  "licensesUrl": "https://github.com/meepifiev/com.jtlstudio.sdk.localization/blob/main/LICENSE.md",
+  "keywords": [
+    "localization",
+    "webgl",
+    "yandex-games",
+    "jtlsdk"
+  ],
+  "dependencies": {
+    "com.unity.ugui": "1.0.0"
+  }
+}

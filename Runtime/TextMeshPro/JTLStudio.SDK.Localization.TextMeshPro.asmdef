@@ -1,0 +1,31 @@
+{
+    "name": "JTLStudio.SDK.Localization.TextMeshPro",
+    "rootNamespace": "JTLStudio.SDK.Localization",
+    "references": [
+        "JTLStudio.SDK",
+        "JTLStudio.SDK.Localization",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "JTLSDK_TEXT_MESH_PRO"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.textmeshpro",
+            "expression": "",
+            "define": "JTLSDK_TEXT_MESH_PRO"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "2.0.0",
+            "define": "JTLSDK_TEXT_MESH_PRO"
+        }
+    ],
+    "noEngineReferences": false
+}
