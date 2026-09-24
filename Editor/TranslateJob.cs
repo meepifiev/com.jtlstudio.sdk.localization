@@ -83,9 +83,9 @@ namespace JTLStudio.SDK.Localization.Editor
                 List<string> batch = texts.GetRange(start, count);
                 float progress = pending.Count == 0 ? 1f : (start + count) / (float)pending.Count;
 
-                if (EditorUtility.DisplayCancelableProgressBar("JTL SDK", language + ": " + (start + count) + " из " + pending.Count, progress))
+                if (EditorUtility.DisplayCancelableProgressBar("JTL SDK", language + ": " + (start + count) + " of " + pending.Count, progress))
                 {
-                    Error = "Отменено.";
+                    Error = "Cancelled.";
                     return filled;
                 }
 

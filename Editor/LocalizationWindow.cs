@@ -7,9 +7,9 @@ namespace JTLStudio.SDK.Localization.Editor
 {
     public class LocalizationWindow : EditorWindow
     {
-        private const string TableTab = "Таблица";
-        private const string SceneTab = "Сцена";
-        private const string SettingsTab = "Настройки";
+        private const string TableTab = "Table";
+        private const string SceneTab = "Scene";
+        private const string SettingsTab = "Settings";
 
         private readonly string[] _tabs = { TableTab, SceneTab, SettingsTab };
 
@@ -80,7 +80,7 @@ namespace JTLStudio.SDK.Localization.Editor
             }
 
             EditorGUILayout.BeginHorizontal();
-            string search = EditorGUILayout.TextField("Поиск по ключу и тексту", _search);
+            string search = EditorGUILayout.TextField("Search by key and translation", _search);
 
             if (search != _search)
             {
@@ -88,17 +88,17 @@ namespace JTLStudio.SDK.Localization.Editor
                 _focusKey = "";
             }
 
-            if (GUILayout.Button("CSV наружу", GUILayout.Width(100f)))
+            if (GUILayout.Button("Export CSV", GUILayout.Width(100f)))
             {
                 ExportCsv();
             }
 
-            if (GUILayout.Button("CSV внутрь", GUILayout.Width(100f)))
+            if (GUILayout.Button("Import CSV", GUILayout.Width(100f)))
             {
                 ImportCsv();
             }
 
-            if (GUILayout.Button("Перевести пустые", GUILayout.Width(130f)))
+            if (GUILayout.Button("Translate empty", GUILayout.Width(130f)))
             {
                 TranslateEmpty();
             }
@@ -145,7 +145,7 @@ namespace JTLStudio.SDK.Localization.Editor
                     EditorUtility.SetDirty(_table);
                 }
 
-                if (GUILayout.Button("Удалить", GUILayout.Width(80f)))
+                if (GUILayout.Button("Delete", GUILayout.Width(80f)))
                 {
                     Undo.RecordObject(_table, "Remove key");
                     _table.Remove(entry.Key);
@@ -167,7 +167,7 @@ namespace JTLStudio.SDK.Localization.Editor
                         GUI.color = new Color(1f, 0.8f, 0.4f);
                     }
 
-                    string edited = EditorGUILayout.TextField(language + (language == fallback ? " (по умолчанию)" : ""), current);
+                    string edited = EditorGUILayout.TextField(language + (language == fallback ? " (default)" : ""), current);
                     GUI.color = color;
 
                     if (edited != current)
@@ -186,15 +186,15 @@ namespace JTLStudio.SDK.Localization.Editor
             if (shown == 0)
             {
                 EditorGUILayout.HelpBox(string.IsNullOrEmpty(_search)
-                    ? "В таблице нет ключей."
-                    : "По запросу «" + _search + "» ничего не нашлось ни в ключах, ни в переводах.", MessageType.None);
+                    ? "The table has no keys."
+                    : "Nothing matches " + _search + " in keys or translations.", MessageType.None);
             }
 
             EditorGUILayout.EndScrollView();
             EditorGUILayout.BeginHorizontal();
-            _newKey = EditorGUILayout.TextField("Новый ключ", _newKey);
+            _newKey = EditorGUILayout.TextField("New key", _newKey);
 
-            if (GUILayout.Button("Добавить", GUILayout.Width(100f)) && string.IsNullOrWhiteSpace(_newKey) == false)
+            if (GUILayout.Button("Add", GUILayout.Width(100f)) && string.IsNullOrWhiteSpace(_newKey) == false)
             {
                 Undo.RecordObject(_table, "Add key");
                 _table.Add(_newKey);
@@ -233,9 +233,9 @@ namespace JTLStudio.SDK.Localization.Editor
         private void DrawTablePicker()
         {
             EditorGUILayout.BeginHorizontal();
-            _table = (LocalizationTable)EditorGUILayout.ObjectField("Таблица", _table, typeof(LocalizationTable), false);
+            _table = (LocalizationTable)EditorGUILayout.ObjectField("Table", _table, typeof(LocalizationTable), false);
 
-            if (GUILayout.Button("Новая", GUILayout.Width(80f)))
+            if (GUILayout.Button("New", GUILayout.Width(80f)))
             {
                 _table = LocalizationProject.CreateTable("LocalizationTable");
             }
@@ -252,20 +252,20 @@ namespace JTLStudio.SDK.Localization.Editor
                 }
                 else
                 {
-                    EditorGUILayout.HelpBox("В проекте нет ни одной таблицы. Нажмите «Новая».", MessageType.Info);
+                    EditorGUILayout.HelpBox("The project has no tables. Press New.", MessageType.Info);
                     return;
                 }
             }
 
-            EditorGUILayout.LabelField(" ", AssetDatabase.GetAssetPath(_table) + "   ключей: " + _table.Entries.Count, EditorStyles.miniLabel);
+            EditorGUILayout.LabelField(" ", AssetDatabase.GetAssetPath(_table) + "   keys: " + _table.Entries.Count, EditorStyles.miniLabel);
         }
 
         private void DrawScene()
         {
             DrawTablePicker();
-            EditorGUILayout.HelpBox("Проход собирает все Text и TextMeshPro открытых сцен и предлагает ключи. Пока не нажата кнопка внизу, ключей нет нигде: по нажатию они заводятся в выбранной таблице, текущий текст уходит в язык по умолчанию, а на объекты вешается компонент Localized Text.", MessageType.None);
+            EditorGUILayout.HelpBox("The pass collects every TextMeshPro of the open scenes and suggests keys. Nothing is written until the button below: it adds the keys to the selected table, puts the current text into the default language and attaches Localized Text.", MessageType.None);
 
-            if (GUILayout.Button("Собрать тексты сцены"))
+            if (GUILayout.Button("Collect scene texts"))
             {
                 _found = SceneTextScanner.Scan();
 
@@ -282,7 +282,7 @@ namespace JTLStudio.SDK.Localization.Editor
                 return;
             }
 
-            EditorGUILayout.LabelField("Найдено текстов: " + _found.Count);
+            EditorGUILayout.LabelField("Texts found: " + _found.Count);
             _sceneScroll = EditorGUILayout.BeginScrollView(_sceneScroll);
 
             foreach (SceneTextScanner.Found item in _found)
@@ -299,14 +299,14 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (_table == null)
             {
-                EditorGUILayout.HelpBox("Сначала выберите таблицу наверху: в неё уйдут ключи.", MessageType.Warning);
+                EditorGUILayout.HelpBox("Pick a table above: the keys go there.", MessageType.Warning);
                 return;
             }
 
-            if (GUILayout.Button("Завести ключи в «" + _table.name + "» и повесить компоненты"))
+            if (GUILayout.Button("Add the keys to " + _table.name + " and attach components"))
             {
                 SceneTextScanner.Apply(_found, _table, LocalizationProject.DefaultLanguage());
-                Debug.Log("[JTL SDK] Ключи сцены записаны в " + AssetDatabase.GetAssetPath(_table) + ".");
+                Debug.Log("[JTL SDK] Scene keys were written to " + AssetDatabase.GetAssetPath(_table) + ".");
                 _found = SceneTextScanner.Scan();
             }
         }
@@ -317,9 +317,9 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (settings == null)
             {
-                EditorGUILayout.HelpBox("Ассет настроек ещё не создан.", MessageType.Info);
+                EditorGUILayout.HelpBox("The settings asset is not created yet.", MessageType.Info);
 
-                if (GUILayout.Button("Создать настройки"))
+                if (GUILayout.Button("Create settings"))
                 {
                     LocalizationProject.RequireSettings();
                 }
@@ -328,14 +328,14 @@ namespace JTLStudio.SDK.Localization.Editor
             }
 
             SerializedObject serialized = new SerializedObject(settings);
-            EditorGUILayout.PropertyField(serialized.FindProperty("_tables"), new GUIContent("Таблицы"), true);
-            EditorGUILayout.PropertyField(serialized.FindProperty("_fonts"), new GUIContent("Шрифты по языкам"));
-            EditorGUILayout.PropertyField(serialized.FindProperty("_missingTranslation"), new GUIContent("Если перевода нет"));
+            EditorGUILayout.PropertyField(serialized.FindProperty("_tables"), new GUIContent("Tables"), true);
+            EditorGUILayout.PropertyField(serialized.FindProperty("_fonts"), new GUIContent("Fonts per language"));
+            EditorGUILayout.PropertyField(serialized.FindProperty("_missingTranslation"), new GUIContent("When a translation is missing"));
             serialized.ApplyModifiedProperties();
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Автоперевод", EditorStyles.boldLabel);
-            string key = EditorGUILayout.PasswordField("Ключ Google Translate", TranslateJob.ApiKey);
+            EditorGUILayout.LabelField("Auto translate", EditorStyles.boldLabel);
+            string key = EditorGUILayout.PasswordField("Google Translate key", TranslateJob.ApiKey);
 
             if (key != TranslateJob.ApiKey)
             {
@@ -343,20 +343,20 @@ namespace JTLStudio.SDK.Localization.Editor
             }
 
             EditorGUILayout.HelpBox(string.IsNullOrWhiteSpace(key)
-                ? "Без ключа запросы идут в бесплатную точку Google, она не даёт гарантий и может ответить отказом. Ключ Cloud Translation API надёжнее."
-                : "Запросы идут в Cloud Translation API с этим ключом. Ключ хранится в EditorPrefs этого компьютера, в проект он не попадает.", MessageType.None);
+                ? "Without a key the requests go to the free Google endpoint, which guarantees nothing and may refuse. A Cloud Translation API key is safer."
+                : "Requests go to Cloud Translation API with this key. The key lives in EditorPrefs of this computer and never reaches the project.", MessageType.None);
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Языки проекта: " + string.Join(", ", LocalizationProject.Languages()));
-            EditorGUILayout.LabelField("Язык по умолчанию: " + LocalizationProject.DefaultLanguage());
-            EditorGUILayout.HelpBox("Языки берутся из окна JTL SDK, раздел Languages.", MessageType.None);
+            EditorGUILayout.LabelField("Project languages: " + string.Join(", ", LocalizationProject.Languages()));
+            EditorGUILayout.LabelField("Default language: " + LocalizationProject.DefaultLanguage());
+            EditorGUILayout.HelpBox("Languages come from JTL SDK, the Languages section.", MessageType.None);
         }
 
         private void TranslateEmpty()
         {
             Language source = LocalizationProject.DefaultLanguage();
 
-            if (EditorUtility.DisplayDialog("JTL SDK", "Перевести пустые строки с языка " + source + " через Google Translate? Существующие переводы не трогаются.", "Перевести", "Отмена") == false)
+            if (EditorUtility.DisplayDialog("JTL SDK", "Translate empty rows from " + source + " with Google Translate? Existing translations stay untouched.", "Translate", "Cancel") == false)
             {
                 return;
             }
@@ -368,19 +368,19 @@ namespace JTLStudio.SDK.Localization.Editor
             AssetDatabase.SaveAssets();
             Localization.Refresh();
 
-            string message = "Переведено строк: " + filled + ".";
+            string message = "Translated rows: " + filled + ".";
 
             if (string.IsNullOrEmpty(job.Error) == false)
             {
-                message += "\n\nСервис ответил: " + job.Error;
+                message += "\n\nThe service answered: " + job.Error;
             }
 
-            EditorUtility.DisplayDialog("JTL SDK", message, "Готово");
+            EditorUtility.DisplayDialog("JTL SDK", message, "Done");
         }
 
         private void ExportCsv()
         {
-            string path = EditorUtility.SaveFilePanel("CSV наружу", "", _table.name + ".csv", "csv");
+            string path = EditorUtility.SaveFilePanel("Export CSV", "", _table.name + ".csv", "csv");
 
             if (string.IsNullOrEmpty(path))
             {
@@ -393,7 +393,7 @@ namespace JTLStudio.SDK.Localization.Editor
 
         private void ImportCsv()
         {
-            string path = EditorUtility.OpenFilePanel("CSV внутрь", "", "csv");
+            string path = EditorUtility.OpenFilePanel("Import CSV", "", "csv");
 
             if (string.IsNullOrEmpty(path))
             {
@@ -405,7 +405,7 @@ namespace JTLStudio.SDK.Localization.Editor
             EditorUtility.SetDirty(_table);
             AssetDatabase.SaveAssets();
             Localization.Refresh();
-            EditorUtility.DisplayDialog("JTL SDK", "Обновлено переводов: " + changed + ".", "Готово");
+            EditorUtility.DisplayDialog("JTL SDK", "Translations updated: " + changed + ".", "Done");
         }
     }
 }

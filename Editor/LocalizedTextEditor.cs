@@ -29,8 +29,8 @@ namespace JTLStudio.SDK.Localization.Editor
             DrawTargetWarning();
             EditorGUILayout.PropertyField(_table);
             DrawKey();
-            EditorGUILayout.PropertyField(_translateText, new GUIContent("Переводить текст"));
-            EditorGUILayout.PropertyField(_applyFont, new GUIContent("Менять шрифт"));
+            EditorGUILayout.PropertyField(_translateText, new GUIContent("Translate text"));
+            EditorGUILayout.PropertyField(_applyFont, new GUIContent("Apply font"));
 
             if (_applyFont.boolValue)
             {
@@ -56,7 +56,7 @@ namespace JTLStudio.SDK.Localization.Editor
             {
                 if (item is LocalizedText component && Localization.Bind(component.gameObject) == null)
                 {
-                    EditorGUILayout.HelpBox("На объекте нет TextMeshPro: подставлять перевод некуда. Компонент работает только с TMP_Text.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("No TextMeshPro on this object: nothing to fill. The component works with TMP_Text only.", MessageType.Warning);
                     return;
                 }
             }
@@ -65,7 +65,7 @@ namespace JTLStudio.SDK.Localization.Editor
         private void DrawKey()
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PropertyField(_key, new GUIContent("Ключ"));
+            EditorGUILayout.PropertyField(_key, new GUIContent("Key"));
 
             if (GUILayout.Button("…", GUILayout.Width(26f)))
             {
@@ -74,7 +74,7 @@ namespace JTLStudio.SDK.Localization.Editor
 
             using (new EditorGUI.DisabledScope(_table.objectReferenceValue == null))
             {
-                if (GUILayout.Button(new GUIContent("В таблицу", "Открыть окно локализации на этом ключе"), GUILayout.Width(80f)))
+                if (GUILayout.Button(new GUIContent("Open table", "Open the localization window at this key"), GUILayout.Width(80f)))
                 {
                     LocalizationWindow.Open(_table.objectReferenceValue as LocalizationTable, _key.stringValue);
                 }
@@ -89,7 +89,7 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (table == null)
             {
-                EditorUtility.DisplayDialog("JTL SDK", "Сначала выберите таблицу.", "Понятно");
+                EditorUtility.DisplayDialog("JTL SDK", "Pick a table first.", "Got it");
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (table.Keys().Count == 0)
             {
-                menu.AddDisabledItem(new GUIContent("В таблице нет ключей"));
+                menu.AddDisabledItem(new GUIContent("The table has no keys"));
             }
 
             menu.ShowAsContext();
@@ -120,8 +120,8 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (fonts == null)
             {
-                EditorGUILayout.PropertyField(_fontSlot, new GUIContent("Набор шрифтов"));
-                EditorGUILayout.HelpBox("Ассет со шрифтами не выбран в окне JTL SDK › Localization.", MessageType.None);
+                EditorGUILayout.PropertyField(_fontSlot, new GUIContent("Font set"));
+                EditorGUILayout.HelpBox("No font asset is selected in JTL SDK, Localization.", MessageType.None);
                 return;
             }
 
@@ -129,12 +129,12 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (names.Count == 0)
             {
-                EditorGUILayout.HelpBox("В ассете шрифтов нет ни одного набора.", MessageType.None);
+                EditorGUILayout.HelpBox("The font asset has no sets.", MessageType.None);
                 return;
             }
 
             int index = Mathf.Max(0, names.IndexOf(_fontSlot.stringValue));
-            int selected = EditorGUILayout.Popup("Набор шрифтов", index, names.ToArray());
+            int selected = EditorGUILayout.Popup("Font set", index, names.ToArray());
             _fontSlot.stringValue = names[selected];
         }
 
@@ -145,7 +145,7 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (table == null || string.IsNullOrEmpty(component.Key))
             {
-                EditorGUILayout.HelpBox("Выберите таблицу и ключ, тогда переводы можно править прямо здесь.", MessageType.Info);
+                EditorGUILayout.HelpBox("Pick a table and a key to edit translations here.", MessageType.Info);
                 DrawCreateKey(table, component);
                 return;
             }
@@ -154,19 +154,19 @@ namespace JTLStudio.SDK.Localization.Editor
 
             if (entry == null)
             {
-                EditorGUILayout.HelpBox("Ключа «" + component.Key + "» нет в таблице.", MessageType.Warning);
+                EditorGUILayout.HelpBox("The key " + component.Key + " is not in the table.", MessageType.Warning);
                 DrawCreateKey(table, component);
                 return;
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Переводы", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Translations", EditorStyles.boldLabel);
             Language fallback = LocalizationProject.DefaultLanguage();
 
             foreach (Language language in LocalizationProject.Languages())
             {
                 string current = entry.Get(language);
-                string label = language + (language == fallback ? " (по умолчанию)" : "");
+                string label = language + (language == fallback ? " (default)" : "");
                 Color color = GUI.color;
 
                 if (string.IsNullOrEmpty(current))
@@ -195,7 +195,7 @@ namespace JTLStudio.SDK.Localization.Editor
                 return;
             }
 
-            if (GUILayout.Button("Добавить ключ в таблицу"))
+            if (GUILayout.Button("Add the key to the table"))
             {
                 Undo.RecordObject(table, "Add key");
                 table.Add(component.Key);

@@ -1,7 +1,7 @@
 {
   "name": "com.jtlstudio.sdk.localization",
   "displayName": "JTL SDK Localization",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "unity": "2021.3",
   "description": "Static text localization for JTL SDK: a table of keys, a component for TextMeshPro, fonts per language, CSV and a scene pass.",
   "author": {

@@ -147,7 +147,7 @@ namespace JTLStudio.SDK.Localization.Editor
                 return request.error;
             }
 
-            return string.IsNullOrEmpty(request.error) ? "Сервис не ответил." : request.error;
+            return string.IsNullOrEmpty(request.error) ? "The service did not answer." : request.error;
         }
     }
 }
